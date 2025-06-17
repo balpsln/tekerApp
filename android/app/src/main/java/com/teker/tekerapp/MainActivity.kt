@@ -1,4 +1,4 @@
-package com.tekerapp
+package com.teker.tekerapp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

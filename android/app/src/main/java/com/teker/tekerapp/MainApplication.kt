@@ -1,4 +1,4 @@
-package com.tekerapp
+package com.teker.tekerapp
 
 import android.app.Application
 import com.facebook.react.PackageList
