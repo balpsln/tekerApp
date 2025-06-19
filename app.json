@@ -1,6 +1,6 @@
 {
-  "name": "TekerApp",
-  "displayName": "TekerApp",
+  "name": "tekerApp",
+  "displayName": "tekerApp",
   "android": {
     "package": "com.teker.tekerapp"
   }
