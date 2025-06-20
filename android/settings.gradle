@@ -6,9 +6,11 @@ pluginManagement {
   }
 }
 
-includeBuild('../node_modules/@react-native/gradle-plugin')
-
 rootProject.name = 'tekerApp'
 include ':app'
 
 
+includeBuild('../node_modules/@react-native/gradle-plugin')
+
+// Use ONLY the settings function
+applyNativeModulesSettingsGradle(settings)  // ✅ Correct for settings.gradle

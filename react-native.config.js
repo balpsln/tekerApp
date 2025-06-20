@@ -1,7 +1,8 @@
 module.exports = {
   project: {
     android: {
-      packageName: 'com.teker.tekerapp',
-    },
-  },
+      sourceDir: './android/app', // Verify this path
+      packageName: 'com.yourpackage.name' // MUST match AndroidManifest.xml & build.gradle
+    }
+  }
 };
