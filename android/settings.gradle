@@ -9,8 +9,8 @@ pluginManagement {
 rootProject.name = 'tekerApp'
 include ':app'
 
+// Apply React Native CLI autolinking settings
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+applyNativeModulesSettingsGradle(settings)
 
 includeBuild('../node_modules/@react-native/gradle-plugin')
-
-// Use ONLY the settings function
-applyNativeModulesSettingsGradle(settings)  // ✅ Correct for settings.gradle
