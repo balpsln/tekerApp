@@ -1,0 +1,18 @@
+// Fallback script to generate a minimal autolinking.json if the React Native CLI fails
+// to create one automatically. This helps unblock builds on environments without
+// full Android tooling.
+
+// Location of the expected autolinking.json
+def autolinkingDir = file("$buildDir/generated/autolinking")
+def autolinkingJson = new File(autolinkingDir, "autolinking.json")
+
+tasks.register("generateDummyAutolinking") {
+    doLast {
+        if (!autolinkingJson.exists()) {
+            autolinkingDir.mkdirs()
+            autolinkingJson.text = '{}\n'
+        }
+    }
+}
+
+preBuild.dependsOn(generateDummyAutolinking)
