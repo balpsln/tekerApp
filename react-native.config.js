@@ -1,8 +1,13 @@
 module.exports = {
   project: {
+    ios: {},
     android: {
-      sourceDir: './android',
-      packageName: 'com.teker.tekerapp'
-    }
-  }
+      sourceDir: '../android',
+      appName: 'app',
+      packageName: 'com.teker.tekerapp',
+    },
+  },
+  dependencies: {
+    // Add any manual linking if needed
+  },
 };
