@@ -119,6 +119,6 @@ dependencies {
 configurations.all {
     resolutionStrategy {
         force "com.facebook.react:react-native:0.80.0" // Your RN version
-        force "com.swmansion.gesturehandler:react-native-gesture-handler:2.15.0" // Match your version
+        //force "com.swmansion.gesturehandler:react-native-gesture-handler:2.27.1" // Match your version
     }
 }

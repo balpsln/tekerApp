@@ -1,7 +1,7 @@
 buildscript {
     ext {
         codegen_version = "0.0.13" // match your react-native version needs
-        kotlin_version = "1.9.22"
+        kotlinVersion = "1.9.22"
     }
     repositories {
         google()
@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:8.5.0") // Or whatever matches your RN version
         classpath("com.google.gms:google-services:4.4.1") // For Firebase
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         //classpath "com.facebook.react:react-native-gradle-plugin:0.80.0"
     }
 }
