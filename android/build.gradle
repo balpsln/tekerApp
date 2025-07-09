@@ -12,11 +12,13 @@ buildscript {
         classpath("com.android.tools.build:gradle:8.5.0") // Or whatever matches your RN version
         classpath("com.google.gms:google-services:4.4.1") // For Firebase
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "com.facebook.react:react-native-gradle-plugin:0.80.0"
+        //classpath "com.facebook.react:react-native-gradle-plugin:0.80.0"
     }
     }
 
-apply plugin: "com.facebook.react.rootproject"
+//apply plugin: "com.facebook.react.rootproject"
+
+
 
 // Add this at the bottom of android/build.gradle
 allprojects {
