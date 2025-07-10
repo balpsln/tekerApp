@@ -45,25 +45,33 @@ android {
     compileSdkVersion 34
     ndkVersion "26.1.10909125"
     
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
     defaultConfig {
         externalNativeBuild {
             cmake {
                 arguments "-DREACT_NATIVE_DIR=${file("$rootDir/../node_modules/react-native")}"
                 arguments "-DANDROID_STL=c++_shared"
                 arguments "-DANDROID_TOOLCHAIN=clang"
+                arguments "-DANDROID_PLATFORM=android-24"
                 cppFlags "-frtti -fexceptions -std=c++17"
             }
         }
         applicationId "com.teker.tekerapp"
-        minSdk 24
+        minSdkVersion 24
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packagingOptions {
+        pickFirst "lib/x86/libc++_shared.so"
+        pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst "lib/arm64-v8a/libc++_shared.so"
+        pickFirst "lib/armeabi-v7a/libc++_shared.so"
     }
 
     kotlinOptions {
@@ -104,9 +112,8 @@ dependencies {
 
     implementation("org.bouncycastle:bcprov-jdk18on:1.76")
 
-    implementation(project(":react-native-gesture-handler")) {
-        exclude group: 'com.facebook.react', module: 'react-native'
-    }
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-reanimated')
     
     // Hermes or JSC (JavaScript engine)
     if (hermesEnabled.toBoolean()) {

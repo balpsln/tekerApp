@@ -1,7 +1,12 @@
 buildscript {
     ext {
         codegen_version = "0.0.13" // match your react-native version needs
-        kotlinVersion = "2.0.21"
+        buildToolsVersion = "34.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+        kotlinVersion = "1.9.0"
     }
     repositories {
         google()
@@ -11,8 +16,8 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:8.5.0") // Or whatever matches your RN version
         classpath("com.google.gms:google-services:4.4.1") // For Firebase
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        //classpath "com.facebook.react:react-native-gradle-plugin:0.80.0"
+        classpath ("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        //classpath ("com.facebook.react:react-native-gradle-plugin")
     }
     }
 
@@ -22,6 +27,21 @@ buildscript {
 
 // Add this at the bottom of android/build.gradle
 allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        maven { url "https://maven.google.com" }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-native:0.80.0"
+            force "androidx.core:core:1.12.0"
+            force "androidx.core:core-ktx:1.12.0"
+        }
+    }
+
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
             android {
