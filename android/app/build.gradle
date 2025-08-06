@@ -1,66 +1,16 @@
 plugins {
     id("com.android.application")
     id("com.facebook.react")
-    id("org.jetbrains.kotlin.android") // If you're using Kotlin
+    id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
 }
-
-//afterEvaluate {
-  //  def rncliDir = file("$projectDir/build/generated/rncli")
-  //  if (rncliDir.exists()) delete(rncliDir)
-//}
-
-
-//apply plugin:"com.facebook.react"
-
-
-/**
- * This is the configuration block to customize your React Native Android app.
- * By default you don't need to apply any configuration, just uncomment the lines you need.
- */
-/**
- * Set this to true to enable Hermes, an open-source JavaScript engine optimized for running React Native.
- * If you want to use Hermes, make sure to set the `hermesEnabled` property in your `gradle.properties` file.
- */
-
-
-apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle")
-applyNativeModulesAppBuildGradle(project)
-
-
-/**
- * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
- */
-def enableProguardInReleaseBuilds = false
-
-/**
- * The preferred build flavor of JavaScriptCore (JSC)
- *
- * For example, to use the international variant, you can use:
- * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
- *
- * The international variant includes ICU i18n library and necessary data
- * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
- * give correct results when using with locales other than en-US. Note that
- * this variant is about 6MiB larger per architecture than default.
- */
-def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
     namespace "com.teker.tekerapp"
     compileSdkVersion 34
     ndkVersion "26.1.10909125"
-    
+
     defaultConfig {
-        externalNativeBuild {
-            cmake {
-                arguments "-DREACT_NATIVE_DIR=${file("$rootDir/../node_modules/react-native")}"
-                arguments "-DANDROID_STL=c++_shared"
-                arguments "-DANDROID_TOOLCHAIN=clang"
-                arguments "-DANDROID_PLATFORM=android-24"
-                cppFlags "-frtti -fexceptions -std=c++17"
-            }
-        }
         applicationId "com.teker.tekerapp"
         minSdkVersion 24
         targetSdkVersion 34
@@ -68,25 +18,11 @@ android {
         versionName "1.0"
     }
 
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-
-    packagingOptions {
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        pickFirst "**/*.kotlin_module"
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+    kotlinOptions { jvmTarget = "17" }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -96,70 +32,35 @@ android {
         }
     }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
+        debug { signingConfig signingConfigs.debug }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
+    }
+    packagingOptions {
+        pickFirst "lib/x86/libc++_shared.so"
+        pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst "lib/arm64-v8a/libc++_shared.so"
+        pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+        pickFirst "**/*.kotlin_module"
     }
 }
 
 react {
     jsRootDir = file("../../")
-    nodeExecutableAndArgs = ["node"]
-    //autolinking {
-    //  disabledModules = ['rncli']
-    //}
 }
 
 dependencies {
-    // React Native core (version controlled by Gradle Plugin)
     implementation("com.facebook.react:react-android")
-
-    // Firebase Auth
     implementation("com.google.firebase:firebase-auth:21.0.3")
-
     implementation("org.bouncycastle:bcprov-jdk18on:1.76")
-
-    
-    // Hermes or JSC (JavaScript engine)
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
-        implementation jscFlavor
-    }
-
-}
-
-configurations.all {
-    resolutionStrategy {
-        force "com.facebook.react:react-native:0.80.0" // Your RN version
-        //force "com.swmansion.gesturehandler:react-native-gesture-handler:2.27.1" // Match your version
-    }
-}
-
-// Exclude rncli's duplicate PackageList from compilation
-afterEvaluate {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:-classfile"
-        exclude '**/build/generated/rncli/**/PackageList.java'
-    }
-}
-
-// Delete rncli-generated PackageList to prevent duplicate class
-tasks.whenTaskAdded { task ->
-    if (task.name == "preBuild") {
-        task.doFirst {
-            def rncliDir = file("$projectDir/build/generated/rncli")
-            if (rncliDir.exists()) {
-                println "Deleting duplicate rncli PackageList at: $rncliDir"
-                rncliDir.deleteDir()
-            }
-        }
+        implementation 'io.github.react-native-community:jsc-android:2026004.+'
     }
 }

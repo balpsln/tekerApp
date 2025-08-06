@@ -3,39 +3,24 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            url "$rootDir/../node_modules/react-native/android"
-        }
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "com.google.gms.google-services") {
-                useModule("com.google.gms:google-services:${requested.version}")
-            }
-        }
+        maven { url("$rootDir/../node_modules/react-native/android") }
     }
     includeBuild("../node_modules/@react-native/gradle-plugin")
 }
 
-// Core React Native setup (proven to work)
-plugins { 
-    id("com.facebook.react.settings") 
-    }
+plugins {
+    id("com.facebook.react.settings")
+}
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" } 
-        maven {
-            url "$rootDir/../node_modules/react-native/android"
-        }
+        maven { url("https://jitpack.io") }
+        maven { url("$rootDir/../node_modules/react-native/android") }
     }
 }
 
 rootProject.name = "tekerapp"
-include ':app'
-
-apply(from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"))
-applyNativeModulesSettingsGradle(settings)
+include(":app")
