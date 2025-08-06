@@ -7,7 +7,6 @@ module.exports = {
       packageName: 'com.teker.tekerapp',
     },
   },
-  dependencies: {
-    // Add any manual linking if needed
-  },
+  dependencies: {},
+  //commands: [],
 };

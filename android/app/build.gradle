@@ -5,6 +5,12 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+//afterEvaluate {
+  //  def rncliDir = file("$projectDir/build/generated/rncli")
+  //  if (rncliDir.exists()) delete(rncliDir)
+//}
+
+
 //apply plugin:"com.facebook.react"
 
 
@@ -62,6 +68,7 @@ android {
         versionName "1.0"
     }
 
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -104,6 +111,10 @@ android {
 
 react {
     jsRootDir = file("../../")
+    nodeExecutableAndArgs = ["node"]
+    //autolinking {
+    //  disabledModules = ['rncli']
+    //}
 }
 
 dependencies {
@@ -129,5 +140,26 @@ configurations.all {
     resolutionStrategy {
         force "com.facebook.react:react-native:0.80.0" // Your RN version
         //force "com.swmansion.gesturehandler:react-native-gesture-handler:2.27.1" // Match your version
+    }
+}
+
+// Exclude rncli's duplicate PackageList from compilation
+afterEvaluate {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:-classfile"
+        exclude '**/build/generated/rncli/**/PackageList.java'
+    }
+}
+
+// Delete rncli-generated PackageList to prevent duplicate class
+tasks.whenTaskAdded { task ->
+    if (task.name == "preBuild") {
+        task.doFirst {
+            def rncliDir = file("$projectDir/build/generated/rncli")
+            if (rncliDir.exists()) {
+                println "Deleting duplicate rncli PackageList at: $rncliDir"
+                rncliDir.deleteDir()
+            }
+        }
     }
 }
