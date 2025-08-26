@@ -54,7 +54,8 @@ android {
 }
 
 react {
-    jsRootDir = file("../../")
+    //jsRootDir = file("../../")
+    nodeExecutableAndArgs = ["node"]
 }
 
 dependencies {
