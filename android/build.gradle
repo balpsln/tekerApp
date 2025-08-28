@@ -1,19 +1,24 @@
 buildscript {
     ext {
-        buildToolsVersion = "34.0.0"
-        minSdkVersion = 24
-        compileSdkVersion = 34
-        targetSdkVersion = 34
-        ndkVersion = "26.1.10909125"
+        // SDK / tools
+        buildToolsVersion = "35.0.0"     // or remove; AGP can auto-select
+        minSdkVersion     = 24
+        compileSdkVersion = 35
+        targetSdkVersion  = 35
+
+        // Toolchain
+        ndkVersion    = "26.1.10909125"
         kotlinVersion = "2.1.20"
     }
+
     repositories {
         google()
         mavenCentral()
     }
+
     dependencies {
-        classpath("com.android.tools.build:gradle:8.5.0")
+        classpath("com.android.tools.build:gradle:8.6.1")
         classpath("com.google.gms:google-services:4.4.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     }
 }

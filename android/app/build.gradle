@@ -1,70 +1,51 @@
 plugins {
     id("com.android.application")
     id("com.facebook.react")
-    id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.android")
+}
+
+react {
+    nodeExecutableAndArgs = ["node"]
+    autolinkLibrariesWithApp()
 }
 
 android {
     namespace "com.teker.tekerapp"
-    compileSdkVersion 34
-    ndkVersion "26.1.10909125"
+
+    // Use values from android/build.gradle's ext { ... }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    ndkVersion       rootProject.ext.ndkVersion
 
     defaultConfig {
         applicationId "com.teker.tekerapp"
-        minSdkVersion 24
-        targetSdkVersion 34
+        minSdkVersion     rootProject.ext.minSdkVersion
+        targetSdkVersion  rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
 
+    // AGP 8.6 uses Java 17; make it explicit
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions { jvmTarget = "17" }
-
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
+    kotlinOptions {
+        jvmTarget = '17'
     }
-
-    buildTypes {
-        debug { signingConfig signingConfigs.debug }
-        release {
-            signingConfig signingConfigs.debug
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
-
-    packagingOptions {
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        pickFirst "**/*.kotlin_module"
-    }
-}
-
-react {
-    //jsRootDir = file("../../")
-    nodeExecutableAndArgs = ["node"]
 }
 
 dependencies {
     implementation("com.facebook.react:react-android")
-    implementation("com.google.firebase:firebase-auth:21.0.3")
+
+    // ⚠️ Remove this direct auth dep to avoid BOM/version clashes with RN Firebase
+    // implementation("com.google.firebase:firebase-auth:21.0.3")
+
     implementation("org.bouncycastle:bcprov-jdk18on:1.76")
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
-        implementation 'io.github.react-native-community:jsc-android:2026004.+'
+        implementation("io.github.react-native-community:jsc-android:2026004.+")
     }
 }
