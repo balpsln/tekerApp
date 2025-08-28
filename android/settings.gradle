@@ -1,29 +1,32 @@
 pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-        maven { url("$rootDir/../node_modules/react-native/android") }
-    }
-    includeBuild("../node_modules/@react-native/gradle-plugin")
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+  }
+  // IMPORTANT: include the RN Gradle plugin build
+  includeBuild("../node_modules/@react-native/gradle-plugin")
 }
 
+// ⬇️ This is the missing piece: settings plugin generates autolinking.json
 plugins {
-    id("com.facebook.react.settings")
+  id("com.facebook.react.settings")
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url("https://jitpack.io") }
-        maven { url("$rootDir/../node_modules/react-native/android") }
-    }
+  // Don’t fail when a plugin adds repos; just prefer the settings ones.
+  repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+  repositories {
+    google()
+    mavenCentral()
+  }
 }
 
-apply(from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"))
-applyNativeModulesSettingsGradle(settings)
 
-rootProject.name = "tekerapp"
+rootProject.name = "tekerApp"
 include(":app")
+
+// Generate build/generated/autolinking/autolinking.json by running the RN CLI
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+  ex.autolinkLibrariesFromCommand()
+}
